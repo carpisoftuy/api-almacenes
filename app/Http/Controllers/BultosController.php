@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Bulto;
 use App\Models\BultoDesarmado;
+use App\Models\BultoContiene;
+use App\Models\BultoContieneFin;
+
 
 class BultosController extends Controller
 {
@@ -44,4 +47,42 @@ class BultosController extends Controller
         $bultoDesarmado->save();
         
     }
+
+    //relacion bulto-paquete
+
+    public function GetAllBultoContienePaquete(Request $request){
+        return BultoContiene::leftJoin('bulto_contiene_fin', 'bulto_contiene.id', '=', 'bulto_contiene_fin.id')
+        ->select('bulto_contiene.*')
+        ->where('bulto_contiene_fin.id', '=', null)
+        ->where('bulto_contiene.id', '!=', null)
+        ->get();
+    }
+
+    public function GetBultoContienePaquete(Request $request){
+        return BultoContiene::find($request->id);
+    }
+
+    public function CreateBultoContienePaquete(Request $request){
+        $bultoContiene = new BultoContiene();
+        $bultoContiene->id_paquete = $request->id_paquete;
+        $bultoContiene->id_bulto = $request->id_bulto;
+        $bultoContiene->save();
+        return BultoContiene::find($bultoContiene->id);
+    }
+
+    public function UpdateBultoContienePaquete(Request $request){
+        $bultoContiene = BultoContiene::find($request->id);
+        $bultoContiene->id_paquete = $request->id_paquete;
+        $bultoContiene->id_bulto = $request->id_bulto;
+        $bultoContiene->save();
+        return BultoContiene::find($bultoContiene->id);
+    }
+    public function DeleteBultoContienePaquete(Request $request){
+        $bultoContiene = new BultoContieneFin();
+        $bultoContiene->id = $request->id;
+        $bultoContiene->fecha_fin = now();
+        $bultoContiene->save();
+    }
+
+
 }

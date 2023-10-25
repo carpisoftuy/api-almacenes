@@ -56,6 +56,12 @@ Route::prefix("v2")->group(function(){
     Route::put('bultos/{id}', [BultosController::class, 'UpdateBulto']);
     Route::delete('bultos/{id}', [BultosController::class, 'DeleteBulto']);
 
+    Route::get('asignar/paquetes/', [BultosController::class, 'GetAllBultoContienePaquete']);
+    Route::get('asignar/paquetes/{id}', [BultosController::class, 'GetBultoContienePaquete']);
+    Route::post('asignar/paquetes', [BultosController::class, 'CreateBultoContienePaquete']);
+    Route::put('asignar/paquetes/{id}', [BultosController::class, 'UpdateBultoContienePaquete']);
+    Route::delete('/asignar/paquetes/{id}', [BultosController::class, 'DeleteBultoContienePaquete']);
+
 
     Route::get('paquetes', [PaqueteController::class, 'GetPaquetes']);
     Route::get('paquetes/{id}', [PaqueteController::class, 'GetPaquete']);
