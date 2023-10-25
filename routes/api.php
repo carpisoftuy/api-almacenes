@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlmacenesController;
 use App\Http\Controllers\BultosController;
+use App\Http\Controllers\PaqueteController;
+use App\Models\Paquete;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +55,13 @@ Route::prefix("v2")->group(function(){
     Route::post('bultos', [BultosController::class, 'CreateBulto']);
     Route::put('bultos/{id}', [BultosController::class, 'UpdateBulto']);
     Route::delete('bultos/{id}', [BultosController::class, 'DeleteBulto']);
+
+
+    Route::get('paquetes', [PaqueteController::class, 'GetPaquetes']);
+    Route::get('paquetes/{id}', [PaqueteController::class, 'GetPaquete']);
+    Route::post('paquetes', [PaqueteController::class, 'CreatePaquete']);
+    Route::put('paquetes/{id}', [PaqueteController::class, 'UpdatePaquete']);
+    Route::delete('paquetes/{id}', [PaqueteController::class, 'DeletePaquete']);
 
 });
 
