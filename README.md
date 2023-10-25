@@ -1,1 +1,1 @@
-No hay migrations, carpifast.sql tiene la estructura de la base de datos.
+
