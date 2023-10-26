@@ -8,7 +8,8 @@ use App\Models\Almacen;
 class AlmacenesController extends Controller
 {
     public function GetAlmacenes(Request $request){
-        return Almacen::all();
+        return Almacen::join('ubicacion', 'ubicacion.id', '=', 'almacen.id_ubicacion')->get();
+
     }
 
     public function GetAlmacen(Request $request){

@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlmacenesController;
 use App\Http\Controllers\BultosController;
 use App\Http\Controllers\PaqueteController;
-use App\Models\Paquete;
+use App\Http\Controllers\UbicacionController;
+use App\Models\Ubicacion;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,10 +40,6 @@ Route::prefix("v1")->group(function(){
 });
 
 Route::prefix("v2")->group(function(){
-
-    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-        return $request->user();
-    });
     
     Route::get('almacenes', [AlmacenesController::class, 'GetAlmacenes']);
     Route::get('almacenes/{id}', [AlmacenesController::class, 'GetAlmacen']);
@@ -68,6 +65,12 @@ Route::prefix("v2")->group(function(){
     Route::post('paquetes', [PaqueteController::class, 'CreatePaquete']);
     Route::put('paquetes/{id}', [PaqueteController::class, 'UpdatePaquete']);
     Route::delete('paquetes/{id}', [PaqueteController::class, 'DeletePaquete']);
+
+    Route::get('ubicaciones', [UbicacionController::class, 'GetUbicaciones']);
+    Route::get('ubicaciones/{id}', [UbicacionController::class, 'GetUbicacion']);
+    Route::post('ubicaciones', [UbicacionController::class, 'CreateUbicacion']);
+    Route::put('ubicaciones/{id}', [UbicacionController::class, 'UpdateUbicacion']);
+    Route::delete('ubicaciones/{id}', [UbicacionController::class, 'DeleteUbicacion']);
 
 });
 
