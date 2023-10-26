@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\BultoContiene;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use App\Models\Paquete;
 use App\Models\PaqueteParaRecoger;
 use App\Models\PaqueteParaEntregar;
 use App\Models\Ubicacion;
+use App\Models\AlmacenContieneBulto;
+use App\Models\AlmacenContieneBultoFin;
 
 class PaqueteController extends Controller
 {   
@@ -17,9 +20,15 @@ class PaqueteController extends Controller
 
         foreach( $paquetes as $paquete ){
 
-            if(BultoContiene::where('id', '=', $paquete->id)->exists()){
-                $paquete->bulto = BultoContiene::join('paquete','paquete.id','=','bulto_contiene.id_paquete')
-                ->select("bulto_contiene.id_bulto")
+            if(BultoContiene::leftJoin('bulto_contiene_fin', 'bulto_contiene_fin.id', '=',  'bulto_contiene.id')
+            ->where('bulto_contiene.id_paquete', '=', $paquete->id)
+            ->where('bulto_contiene_fin.id', '=', null)
+            ->exists()){
+                $paquete->bulto = BultoContiene::leftJoin('almacen_contiene_bulto','almacen_contiene_bulto.id_bulto','=','bulto_contiene.id_bulto')
+                ->join('paquete', 'paquete.id', '=', 'bulto_contiene.id_paquete') 
+                ->select('bulto_contiene.id_bulto')
+                ->where('paquete.id', '=', $paquete->id)
+                ->where('bulto_contiene.id_bulto','!=', null)
                 ->first()
                 ->id_bulto;
             }
