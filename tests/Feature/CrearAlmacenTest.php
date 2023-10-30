@@ -29,7 +29,6 @@ class CrearAlmacenTest extends TestCase
         $almacenCreadoId = Almacen::latest('id')->first()->id;
 
         if ($almacenCreadoId) {
-            // Elimina el bulto al final de la prueba
             Almacen::destroy($almacenCreadoId);
         }
 
