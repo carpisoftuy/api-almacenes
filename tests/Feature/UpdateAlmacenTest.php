@@ -14,7 +14,7 @@ class UpdateAlmacenTest extends TestCase
      *
      * @return void
      */
-    public function testUpdateBulto(){
+    public function testUpdateAlmacen(){
 
         $almacen = Almacen::create([
             'espacio' => 3020,
