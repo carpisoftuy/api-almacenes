@@ -23,5 +23,25 @@ class CrearBulto extends TestCase
         $response->assertStatus(200);
     }
 
+    public function testCreateBultoSinDatos() {
+        $response = $this->post('/api/v2/bultos', [
+            'volumen' => "",
+            'peso' => "",
+            'almacen_destino' => "",
+        ]);
+
+        $response->assertStatus(500);
+    }
+
+    public function testCreateBultoConDatoIncorrecto() {
+        $response = $this->post('/api/v2/bultos', [
+            'volumen' => "jaja",
+            'peso' => "dsadss",
+            'almacen_destino' => 2,
+        ]);
+
+        $response->assertStatus(500);
+    }
+
 
 }
