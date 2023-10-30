@@ -40,6 +40,8 @@ class UpdateBultoTest extends TestCase
         $this->assertEquals($nuevoPeso, $bulto->fresh()->peso);
         $this->assertEquals($nuevoAlmacenDestino, $bulto->fresh()->almacen_destino);
 
+        $bulto->delete();
+
     }
 
      

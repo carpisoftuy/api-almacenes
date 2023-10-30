@@ -25,6 +25,7 @@ class DeleteBultoTest extends TestCase
 
     $response = $this->delete("/api/v2/bultos/{$bulto->id}");
     $response->assertStatus(200);
+
     }
 
     public function testDeleteBultoConIdIncorrecta(){
@@ -39,6 +40,9 @@ class DeleteBultoTest extends TestCase
    
        $response = $this->delete("/api/v2/bultos/{$id_incorrecta}");
        $response->assertStatus(500);
+
+       $bulto->delete();
+
        }
 
 }

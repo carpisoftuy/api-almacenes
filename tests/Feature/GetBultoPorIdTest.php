@@ -33,6 +33,8 @@ class GetBultoPorIdTest extends TestCase
             'almacen_destino' => $bulto->almacen_destino,
         ]);
 
+        $bulto->delete();
+
     }   
     
 }
