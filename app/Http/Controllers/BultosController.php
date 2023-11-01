@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AlmacenContieneBulto;
 use Illuminate\Http\Request;
 use App\Models\Bulto;
 use App\Models\BultoDesarmado;
@@ -14,9 +15,11 @@ class BultosController extends Controller
     public function GetBultos(Request $request){
         return Bulto::leftJoin('bulto_desarmado', 'bulto.id', '=', 'bulto_desarmado.id')
         ->join('almacen_contiene_bulto' ,'almacen_contiene_bulto.id_bulto','=','bulto.id')
-        ->join('almacen','almacen.id','=','almacen_contiene_bulto.id_almacen')
-        ->join('ubicacion','ubicacion.id','=','almacen.id_ubicacion')
-        ->select('bulto.*', 'ubicacion.*')
+        ->join('almacen as almacen_actual','almacen_actual.id','=','almacen_contiene_bulto.id_almacen')
+        ->join('almacen as almacen_destino','almacen_destino.id','=','bulto.almacen_destino')
+        ->join('ubicacion as ubicacion_actual','ubicacion_actual.id','=','almacen_actual.id_ubicacion')
+        ->join('ubicacion as ubicacion_destino','ubicacion_destino.id','=','almacen_destino.id_ubicacion')
+        ->select('bulto.*','ubicacion_actual.direccion as direccion_actual', 'ubicacion_actual.codigo_postal as codigo_postal_actual', 'ubicacion_destino.direccion as direccion_destino', 'ubicacion_destino.codigo_postal as codigo_postal_destino', 'bulto.id') 
         ->where('bulto_desarmado.id', '=', null)
         ->where('bulto.id', '!=', null)
         ->get();
@@ -33,7 +36,14 @@ class BultosController extends Controller
         $bulto->peso = $request->post('peso');
         $bulto->almacen_destino = $request->post('almacen_destino');
         $bulto->save();
-        return Bulto::find($bulto->id);
+
+        //mete automaticamente el bulto en el almacen donde se creo
+        $almacenContieneBulto = new AlmacenContieneBulto();
+        $almacenContieneBulto->id_bulto = $bulto->id;
+        $almacenContieneBulto->id_almacen = $request->almacen_origen;
+        $almacenContieneBulto->save();
+
+        return [Bulto::find($bulto->id), AlmacenContieneBulto::find($almacenContieneBulto->id)];
     }
     public function UpdateBulto(Request $request){
         $bulto = Bulto::find($request->id);
@@ -86,6 +96,8 @@ class BultosController extends Controller
         $bultoContiene->fecha_fin = now();
         $bultoContiene->save();
     }
+
+
 
 
 }

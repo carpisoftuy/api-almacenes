@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\AlmacenContieneBulto;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -19,11 +20,18 @@ class CrearBulto extends TestCase
             'volumen' => 10,
             'peso' => 5,
             'almacen_destino' => 2,
+            'almacen_origen' => 1,
         ]);
 
         $response->assertStatus(200);
 
         $bultoCreadoId = Bulto::latest('id')->first()->id;
+        $almacenContieneId = AlmacenContieneBulto::latest('id')->first()->id;
+
+        if ($almacenContieneId) {
+            // Elimina el bulto al final de la prueba
+            AlmacenContieneBulto::destroy($almacenContieneId);
+        }
 
         if ($bultoCreadoId) {
             // Elimina el bulto al final de la prueba
@@ -37,6 +45,7 @@ class CrearBulto extends TestCase
             'volumen' => "",
             'peso' => "",
             'almacen_destino' => "",
+            'almacen_origen' => "",
         ]);
 
         $response->assertStatus(500);
@@ -48,6 +57,7 @@ class CrearBulto extends TestCase
             'volumen' => "jaja",
             'peso' => "dsadss",
             'almacen_destino' => 2,
+            'almacen_origen' => ["sda", !"234"],
         ]);
 
         $response->assertStatus(500);
