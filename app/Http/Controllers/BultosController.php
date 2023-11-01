@@ -13,7 +13,10 @@ class BultosController extends Controller
 {
     public function GetBultos(Request $request){
         return Bulto::leftJoin('bulto_desarmado', 'bulto.id', '=', 'bulto_desarmado.id')
-        ->select('bulto.*')
+        ->join('almacen_contiene_bulto' ,'almacen_contiene_bulto.id_bulto','=','bulto.id')
+        ->join('almacen','almacen.id','=','almacen_contiene_bulto.id_almacen')
+        ->join('ubicacion','ubicacion.id','=','almacen.id_ubicacion')
+        ->select('bulto.*', 'ubicacion.*')
         ->where('bulto_desarmado.id', '=', null)
         ->where('bulto.id', '!=', null)
         ->get();
