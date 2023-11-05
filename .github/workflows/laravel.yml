@@ -13,10 +13,10 @@ jobs:
       mysql:
         image: mysql:8
         env:
-          MYSQL_DATABASE: laravel
+          MYSQL_DATABASE: carpisoft
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
         ports:
-          - 3306:3306
+          - 3307:3307
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=10s --health-retries=10
     container:
       image: ggmartinez/laravel:php-82
