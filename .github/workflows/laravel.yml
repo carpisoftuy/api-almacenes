@@ -31,4 +31,4 @@ jobs:
       - name: Execute tests (Unit and Feature tests) via PHPUnit
         env:
           DB_HOST: 127.0.0.1
-        run: php -d xdebug.mode=off artisan test
+        run: php artisan test
