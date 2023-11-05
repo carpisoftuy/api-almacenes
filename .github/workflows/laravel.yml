@@ -28,14 +28,6 @@ jobs:
         run: composer install
       - name: Generate key
         run: php artisan key:generate
-      - name: Create Database
-        env:
-          DB_HOST: 127.0.0.1
-        run: php artisan migrate
-      - name: Seed Database
-        env:
-          DB_HOST: 127.0.0.1
-        run: php artisan db:seed
       - name: Execute tests (Unit and Feature tests) via PHPUnit
         env:
           DB_HOST: 127.0.0.1
