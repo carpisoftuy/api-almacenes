@@ -19,7 +19,7 @@ class BultosController extends Controller
         ->join('almacen as almacen_destino','almacen_destino.id','=','bulto.almacen_destino')
         ->join('ubicacion as ubicacion_actual','ubicacion_actual.id','=','almacen_actual.id_ubicacion')
         ->join('ubicacion as ubicacion_destino','ubicacion_destino.id','=','almacen_destino.id_ubicacion')
-        ->select('bulto.*','ubicacion_actual.direccion as direccion_actual', 'ubicacion_actual.codigo_postal as codigo_postal_actual', 'ubicacion_destino.direccion as direccion_destino', 'ubicacion_destino.codigo_postal as codigo_postal_destino', 'bulto.id') 
+        ->select('bulto.*','ubicacion_actual.direccion as direccion_actual', 'ubicacion_actual.codigo_postal as codigo_postal_actual', 'ubicacion_destino.direccion as direccion_destino', 'ubicacion_destino.codigo_postal as codigo_postal_destino', 'bulto.id')
         ->where('bulto_desarmado.id', '=', null)
         ->where('bulto.id', '!=', null)
         ->get();
@@ -41,6 +41,7 @@ class BultosController extends Controller
         $almacenContieneBulto = new AlmacenContieneBulto();
         $almacenContieneBulto->id_bulto = $bulto->id;
         $almacenContieneBulto->id_almacen = $request->almacen_origen;
+        $almacenContieneBulto->fecha_inicio = now();
         $almacenContieneBulto->save();
 
         return [Bulto::find($bulto->id), AlmacenContieneBulto::find($almacenContieneBulto->id)];
@@ -58,7 +59,7 @@ class BultosController extends Controller
         $bultoDesarmado->id = $request->id;
         $bultoDesarmado->fecha_desarmado = now();
         $bultoDesarmado->save();
-        
+
     }
 
     //relacion bulto-paquete

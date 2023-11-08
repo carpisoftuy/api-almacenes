@@ -15,8 +15,8 @@ use App\Models\AlmacenContieneBultoFin;
 use Illuminate\Support\Facades\DB;
 
 class PaqueteController extends Controller
-{   
-    
+{
+
     public function GetPaquetes(Request $request){
         $paquetes = Paquete::all();
 
@@ -27,7 +27,7 @@ class PaqueteController extends Controller
             ->where('bulto_contiene_fin.id', '=', null)
             ->exists()){
                 $paquete->bulto = BultoContiene::leftJoin('almacen_contiene_bulto','almacen_contiene_bulto.id_bulto','=','bulto_contiene.id_bulto')
-                ->join('paquete', 'paquete.id', '=', 'bulto_contiene.id_paquete') 
+                ->join('paquete', 'paquete.id', '=', 'bulto_contiene.id_paquete')
                 ->select('bulto_contiene.id_bulto')
                 ->where('paquete.id', '=', $paquete->id)
                 ->where('bulto_contiene.id_bulto','!=', null)
@@ -36,7 +36,7 @@ class PaqueteController extends Controller
                 if(AlmacenContieneBulto::leftJoin('almacen_contiene_bulto_fin', 'almacen_contiene_bulto_fin.id', '=', 'almacen_contiene_bulto.id')
                 ->where('almacen_contiene_bulto.id_bulto', '=', $paquete->bulto)
                 ->where('almacen_contiene_bulto_fin.id', '=', null)
-                ->exists()                
+                ->exists()
                 ){
                     $paquete->almacen = AlmacenContieneBulto::leftJoin('almacen_contiene_bulto_fin', 'almacen_contiene_bulto_fin.id', '=', 'almacen_contiene_bulto.id')
                     ->join('almacen', 'almacen.id', '=', 'almacen_contiene_bulto.id_almacen')
@@ -80,7 +80,7 @@ class PaqueteController extends Controller
                 ->join('ubicacion', 'almacen.id_ubicacion', '=', 'ubicacion.id')
                 ->select('almacen.*', 'ubicacion.*')
                 ->first();
-                
+
             }
 
         }
@@ -114,6 +114,13 @@ class PaqueteController extends Controller
             $paqueteParaEntregar->ubicacion_destino = $ubicacion->id;
             $paqueteParaEntregar->save();
         }
+        if($request->post('tipo') == 'recoger'){
+
+            $paqueteParaRecoger = new PaqueteParaRecoger();
+            $paqueteParaRecoger->id = $paquete->id;
+            $paqueteParaRecoger->almacen_destino = $request->almacen_destino;
+            $paqueteParaRecoger->save();
+        }
         DB::commit();
         return Paquete::find($paquete->id);
     }
@@ -126,9 +133,9 @@ class PaqueteController extends Controller
         return Paquete::find($request->id);
     }
 
-    public function DeletePaquete(Request $request){ 
+    public function DeletePaquete(Request $request){
         $paquete = Paquete::find($request->id);
         $paquete->delete();
     }
-    
+
 }
