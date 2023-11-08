@@ -12,6 +12,8 @@ use App\Models\PaqueteParaEntregar;
 use App\Models\Ubicacion;
 use App\Models\AlmacenContieneBulto;
 use App\Models\AlmacenContieneBultoFin;
+use App\Models\AlmacenContienePaqueteFin;
+use App\Models\AlmacenContienePaquete;
 use Illuminate\Support\Facades\DB;
 
 class PaqueteController extends Controller
@@ -100,6 +102,11 @@ class PaqueteController extends Controller
         $paquete->volumen = $request->post('volumen');
         $paquete->peso = $request->post('peso');
         $paquete->save();
+
+        $almacen_contiene_paquete = new AlmacenContienePaquete();
+        $almacen_contiene_paquete->id_paquete = $paquete->id;
+        $almacen_contiene_paquete->id_almacen = $request->almacen_origen;
+        $almacen_contiene_paquete->save();
 
         if($request->post('tipo') == 'entregar'){
             $ubicacion = new Ubicacion();
