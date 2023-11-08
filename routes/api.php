@@ -6,7 +6,7 @@ use App\Http\Controllers\AlmacenesController;
 use App\Http\Controllers\BultosController;
 use App\Http\Controllers\PaqueteController;
 use App\Http\Controllers\UbicacionController;
-use App\Models\Ubicacion;
+use App\Http\Controllers\VehiculoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +71,9 @@ Route::prefix("v2")->group(function(){
     Route::post('ubicaciones', [UbicacionController::class, 'CreateUbicacion']);
     Route::put('ubicaciones/{id}', [UbicacionController::class, 'UpdateUbicacion']);
     Route::delete('ubicaciones/{id}', [UbicacionController::class, 'DeleteUbicacion']);
+
+    Route::get('camiones', [VehiculoController::class, 'GetCamiones']);
+    Route::post('camiones', [VehiculoController::class, 'CargarBultoACamion']);
 
 });
 
