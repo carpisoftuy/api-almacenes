@@ -75,5 +75,8 @@ Route::prefix("v2")->group(function(){
     Route::get('camiones', [VehiculoController::class, 'GetCamiones']);
     Route::post('camiones', [VehiculoController::class, 'CargarBultoACamion']);
 
+    Route::get('camionetas', [VehiculoController::class, 'GetCamionetas']);
+    Route::post('camionetas', [VehiculoController::class, 'CargarPaqueteACamioneta']);
+
 });
 
